@@ -22,7 +22,7 @@ int	not_correct_number_argument(int argc)
 		return (0);
 }
 
-void	creat_philos(t_data *data)
+void	malloc_philos(t_data *data)
 {
 	int	i;
 
@@ -30,34 +30,30 @@ void	creat_philos(t_data *data)
 	data->philo = malloc(sizeof(t_philo) * data->philo_nb);
 	if (!data->philo)
 		return;
-	while (i < data->philo_nb)
-	{
-		data->philo[i].philo_id = i;
-		i++;
-	}
-
-
 }
 
-void	creat_forks(t_data *data)
+void	malloc_forks(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	data->forks = malloc(sizeof(int) * data->philo_nb);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_nb);
 	if (!data->forks)
 		return ;
-	while (i < data->philo_nb)
-	{
-		data->forks[i] = i;
-		i++;
-	}
+}
+
+void	link_fork_to_philos(t_data *data)
+{
+	int	i;
+
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		printf("%d", data->forks[i]);
+		data->philo[i].left_fork = &data->forks[i + 1];
+		data->philo[i].right_fork = &data->forks[i];
 		i++;
 	}
+	data->philo[i].left_fork = &data->forks[0];
 }
 
 void	fill_data(t_data *data, int argc, char **argv)
@@ -71,8 +67,9 @@ void	fill_data(t_data *data, int argc, char **argv)
 		data->time_philo_nb = ft_atol(argv[5]);
 	else
 		data->time_philo_nb = -1;
-	creat_philos(data);
-	creat_forks(data);
+	malloc_philos(data);
+	malloc_forks(data);
+	link_fork_to_philos(data);
 }
 
 long	ft_atol(char *str)

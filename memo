@@ -1,0 +1,20 @@
+1 sec = 1 000 000 microseconds
+1 sec = 1 000 milliseconds
+
+usleep utiliser microseconde donc faire (/ 1 000);
+gettimeofday : donne le temp en seconde et en microseconde
+
+
+gettimoefday de la fin - le debut
+valgrind : --tool=helgrind
+
+	// while (i < data->philo_nb)
+	// {
+	// 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
+	// 		error_exit("probl"); //check leaks
+	// 	i++;
+	// }
+
+cree le moniteur (pas encore fait)
+
+pthread_creat(adresse du pthread_t, )
