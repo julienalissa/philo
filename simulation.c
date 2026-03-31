@@ -1,5 +1,17 @@
 #include "philo.h"
 
+void	*philo_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	(void)philo;
+	//manger
+	// dormir
+	// pnser
+	return (NULL);
+}
+
 void	creat_philos(t_data *data)
 {
 	int	i;
@@ -7,7 +19,7 @@ void	creat_philos(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		if (pthread_creat(&(data->philo->name), NULL, NULL, NULL) != 0)
+		if (pthread_create(&(data->philo[i].name), NULL, philo_routine, &data->philo[i]) != 0)
 			error_exit("probl"); //check leaks
 		i++;
 	}
@@ -28,26 +40,18 @@ void	creat_forks(t_data *data)
 
 void	time_to_eat(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	usleep(data->time_eat);
-
+	usleep(data->time_eat * 1000);
 }
 
 void	start_simulation(t_data *data)
 {
-	(void)data;
-	long long begin_time;
-
-	begin_time = start_time();
-	creat_philos(data);
+	data->time_start = start_time();
 	creat_forks(data);
+	creat_philos(data);
 	while (1)
 	{
 		time_to_eat(data);
 		// time_to_sleep(data);
 		// time_to_think(data);
 	}
-
 }

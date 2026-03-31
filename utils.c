@@ -8,7 +8,7 @@ void	check_valid_argument(t_data *data)
 		error_exit("time to die cant be negatif or > LONG MAX\n");
 	if (data->time_eat < 1)
 		error_exit("time to eat cant be negatif or > LONG MAX\n");
-	if (data->time_eat < 1)
+	if (data->time_sleep < 1)
 		error_exit("time to sleep cant be negatif or > LONG MAX\n");
 	if (data->argc == 6 && data->time_philo_nb < 1)
 		error_exit("nb time philo must eat cant be negatif or > LONG MAX\n");
@@ -24,22 +24,16 @@ int	not_correct_number_argument(int argc)
 
 void	malloc_philos(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	data->philo = malloc(sizeof(t_philo) * data->philo_nb);
 	if (!data->philo)
-		return;
+		error_exit("malloc failed\n");
 }
 
 void	malloc_forks(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_nb);
 	if (!data->forks)
-		return ;
+		error_exit("malloc failed\n");
 }
 
 void	link_fork_to_philos(t_data *data)
@@ -49,11 +43,12 @@ void	link_fork_to_philos(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		data->philo[i].left_fork = &data->forks[i + 1];
+		data->philo[i].philo_id = i + 1;
 		data->philo[i].right_fork = &data->forks[i];
+		data->philo[i].left_fork = &data->forks[(i + 1) % data->philo_nb];
+		data->philo[i].data = data;
 		i++;
 	}
-	data->philo[i].left_fork = &data->forks[0];
 }
 
 void	fill_data(t_data *data, int argc, char **argv)
@@ -96,7 +91,7 @@ long	ft_atol(char *str)
 void	error_exit(char *error)
 {
 	printf("%s", error);
-	//free_if need
+	// free si besoin
 	exit(1);
 }
 

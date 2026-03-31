@@ -1,3 +1,6 @@
+#ifndef PHILO_H
+#define PHILO_H
+
 #include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
@@ -7,9 +10,6 @@
 
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
-
-#ifndef PHILO_H
-#define PHILO_H
 
 
 
@@ -46,6 +46,7 @@ void	error_exit(char *error);
 
 // Simulation
 void	start_simulation(t_data *data);
+void	*philo_routine(void *arg);
 
 // Time
 long long	start_time(void);
