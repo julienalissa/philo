@@ -19,8 +19,8 @@ void	creat_philos(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		if (pthread_create(&(data->philo[i].name), NULL, philo_routine, &data->philo[i]) != 0)
-			error_exit("probl"); //check leaks
+		if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
+			error_exit("prob");
 		i++;
 	}
 }
@@ -32,15 +32,11 @@ void	creat_forks(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
-			error_exit("probl"); // check leaks
+		if (pthread_create(&(data->philo[i].name), NULL,
+				philo_routine, &data->philo[i]) != 0)
+			error_exit("prob");
 		i++;
 	}
-}
-
-void	time_to_eat(t_data *data)
-{
-	usleep(data->time_eat * 1000);
 }
 
 void	start_simulation(t_data *data)
