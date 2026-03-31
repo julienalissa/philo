@@ -1,18 +1,35 @@
 #include "philo.h"
 
-void	*philo_routine(void *arg)
-{
-	t_philo	*philo;
+void	*philo_routine(void *arg);
+void	creat_and_start_routine(t_data *data);
 
-	philo = (t_philo *)arg;
-	(void)philo;
-	//manger
-	// dormir
-	// pnser
-	return (NULL);
+void	start_simulation(t_data *data)
+{
+	data->time_start = start_time();
+	creat_and_start_routine(data);
 }
 
-void	creat_philos(t_data *data)
+void	creat_and_start_routine(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		if (pthread_create(&(data->philo[i].name), NULL,
+				philo_routine, &data->philo[i]) != 0)
+			printf("marche pas"); //error_exit("prob");
+		i++;
+	}
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		pthread_join(data->philo[i].name, NULL);
+		i++;
+	}
+}
+
+void	creat_forks(t_data *data)
 {
 	int	i;
 
@@ -25,29 +42,8 @@ void	creat_philos(t_data *data)
 	}
 }
 
-void	creat_forks(t_data *data)
-{
-	int	i;
 
-	i = 0;
-	while (i < data->philo_nb)
-	{
-		if (pthread_create(&(data->philo[i].name), NULL,
-				philo_routine, &data->philo[i]) != 0)
-			error_exit("prob");
-		i++;
-	}
-}
 
-void	start_simulation(t_data *data)
-{
-	data->time_start = start_time();
-	creat_forks(data);
-	creat_philos(data);
-	while (1)
-	{
-		time_to_eat(data);
-		// time_to_sleep(data);
-		// time_to_think(data);
-	}
-}
+
+
+
