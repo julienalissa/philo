@@ -10,7 +10,7 @@ void	*philo_routine(void *arg)
 {
     t_philo *philo;
     philo = (t_philo *)arg;
-    print_it(&philo->data->print, "philo created : ", philo->philo_id);
+    print_it(&philo->data->print, "Philo created : ", philo->philo_id);
     while (1)
     {
         // check_all(philo);
@@ -22,6 +22,34 @@ void	*philo_routine(void *arg)
     }
 
     return (NULL);
+}
+
+void    *monitor_routine(void *arg)
+{
+    int i;
+    t_data *data;
+    long long end;
+
+    i = 0;
+    data = (t_data *)arg;
+    print_it(&data->print, "Monitor created", -1);
+    while (1)
+    {
+        i = 0;
+        while (i < data->philo_nb)
+        {
+            end = end_time(data->philo[i].last_eat);
+            // printf("%lld", end);
+            printf("\nend = %lld, time die = %lld\n", end, data->time_die);
+            if (end >= data->time_die)
+                exit(1);
+            // exit(1);
+    //       if (monitor->data->nb_eat_before_stop != -1 && monitor->data->nb_eat_before_stop <= monitor->data->nb_eat)
+    //            error_exit("Ils ont tous monger");////////////////attention
+            i++;
+        }
+    }
+
 }
 
 // void check_all(t_philo *philo)
@@ -47,17 +75,14 @@ void    go_eat(t_philo *philo)
         pthread_mutex_lock(philo->right_fork);
         print_it(&philo->data->print, "Take right fork\n", -1);
     }
-    incremente_eat_nb(philo);
+    philo->nb_eat++;
     print_it(&philo->data->print, "I am eating\n", -1);
+    philo->last_eat = start_time();
     usleep(philo->data->time_eat * 1000);
+    philo->last_eat = start_time();
     pthread_mutex_unlock(philo->right_fork);
     pthread_mutex_unlock(philo->left_fork);
 
-}
-
-void    incremente_eat_nb(t_philo   *philo)
-{
-    philo->nb_eat++;
 }
 
 void    go_sleep(t_philo *philo)

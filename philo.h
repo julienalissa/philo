@@ -18,23 +18,32 @@ typedef struct s_philo
 	int				philo_id; // ok
 	pthread_mutex_t	*left_fork; // ok
 	pthread_mutex_t *right_fork; // ok
+	long long		last_eat; //ok
+	long			nb_eat; //ok
 	t_data	*data; // ok
-	long			last_eat;
-	long			nb_eat;
 }	t_philo;
+
+typedef struct s_monitor
+{
+	pthread_t		name;
+	t_data		*data;
+}	t_monitor;
 
 typedef struct s_data
 {
+	int			stop;
 	long long	time_start;
 	int			argc;
 	int			philo_nb; // ok
-	long		time_die; // ok
-	long		time_eat; // ok
-	long		time_sleep; // ok
-	long		nb_eat_before_stop; // ok
+	long long		time_die; // ok
+	long long		time_eat; // ok
+	long long		time_sleep; // ok
+	long long		nb_eat_before_stop; // ok
 	pthread_mutex_t *forks; // ok
 	pthread_mutex_t	print; // ok
+	t_monitor *monitor;
 	t_philo *philo;
+
 }	t_data;
 
 // Parcing Data
@@ -55,5 +64,8 @@ long long	end_time(long long start);
 
 // print
 void    print_it(pthread_mutex_t *lock_it, char  *msg, int id);
+
+// monitor
+void    *monitor_routine(void *arg);
 
 #endif

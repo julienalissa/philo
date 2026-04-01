@@ -5,6 +5,7 @@ void	malloc_forks(t_data *data);
 void	link_fork_to_philos(t_data *data);
 long	ft_atol(char *str);
 void	initate_nb_eat(t_data *data);
+void	initate_last_eat(t_data *data);
 
 void	fill_data(t_data *data, int argc, char **argv)
 {
@@ -24,6 +25,28 @@ void	fill_data(t_data *data, int argc, char **argv)
 	pthread_mutex_init(&data->print, NULL);
 	creat_forks(data);
 	initate_nb_eat(data);
+	initate_last_eat(data);
+	data->stop = 0;
+}
+
+void	initate_last_eat(t_data *data)
+{
+	int	i;
+	long long start;
+
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		start = start_time();
+		data->philo[i].last_eat = start;
+		i++;
+	}
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		printf("%lld", data->philo[i].last_eat);
+		i++;
+	}
 }
 
 void	initate_nb_eat(t_data *data)
@@ -33,7 +56,7 @@ void	initate_nb_eat(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		data->philo[i].nb_eat = 0;
+		data->philo[i].last_eat = 0;
 		i++;
 	}
 }
@@ -42,6 +65,9 @@ void	malloc_philos(t_data *data)
 {
 	data->philo = malloc(sizeof(t_philo) * data->philo_nb);
 	if (!data->philo)
+		error_exit("malloc problem\n");
+	data->monitor = malloc(sizeof(t_monitor));
+	if (!data->monitor)
 		error_exit("malloc problem\n");
 }
 
