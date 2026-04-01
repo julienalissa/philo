@@ -19,7 +19,6 @@ void	*philo_routine(void *arg)
         go_sleep(philo);
         // check_all(philo);
         go_think(philo);
-        i++;
     }
 
     return (NULL);
@@ -37,16 +36,16 @@ void    go_eat(t_philo *philo)
     if (philo->philo_id % 2 == 0)
     {
         pthread_mutex_lock(philo->right_fork);
-        print_it(&philo->data->print, "Take left fork\n", -1);
-        pthread_mutex_lock(philo->left_fork);
         print_it(&philo->data->print, "Take right fork\n", -1);
+        pthread_mutex_lock(philo->left_fork);
+        print_it(&philo->data->print, "Take left fork\n", -1);
     }
     else
     {
         pthread_mutex_lock(philo->left_fork);
-        print_it(&philo->data->print, "Take right fork\n", -1);
-        pthread_mutex_lock(philo->right_fork);
         print_it(&philo->data->print, "Take left fork\n", -1);
+        pthread_mutex_lock(philo->right_fork);
+        print_it(&philo->data->print, "Take right fork\n", -1);
     }
     incremente_eat_nb(philo);
     print_it(&philo->data->print, "I am eating\n", -1);
@@ -58,13 +57,7 @@ void    go_eat(t_philo *philo)
 
 void    incremente_eat_nb(t_philo   *philo)
 {
-    pthread_mutex_t lock;
-
-    pthread_mutex_init(&lock, NULL);
-    pthread_mutex_lock(&lock);
     philo->nb_eat++;
-    pthread_mutex_unlock(&lock);
-    pthread_mutex_destroy(&lock);
 }
 
 void    go_sleep(t_philo *philo)
