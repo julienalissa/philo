@@ -15,7 +15,7 @@ void	creat_and_start_routine(t_data *data)
 
 	i = 0;
 	if (pthread_create(&(data->monitor->name), NULL,
-				monitor_routine, &data) != 0)
+				monitor_routine, data) != 0)
 			printf("monitor marche pas"); //error_exit("prob");
 	while (i < data->philo_nb)
 	{
@@ -30,6 +30,7 @@ void	creat_and_start_routine(t_data *data)
 		pthread_join(data->philo[i].name, NULL);
 		i++;
 	}
+	pthread_join(data->monitor->name, NULL);
 }
 
 void	creat_forks(t_data *data)

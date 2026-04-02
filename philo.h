@@ -41,6 +41,7 @@ typedef struct s_data
 	long long		nb_eat_before_stop; // ok
 	pthread_mutex_t *forks; // ok
 	pthread_mutex_t	print; // ok
+	pthread_mutex_t	state_lock;
 	t_monitor *monitor;
 	t_philo *philo;
 

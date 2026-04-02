@@ -23,10 +23,12 @@ void	fill_data(t_data *data, int argc, char **argv)
 	link_fork_to_philos(data);
 	check_valid_argument(data);
 	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->state_lock, NULL);
 	creat_forks(data);
 	initate_nb_eat(data);
 	initate_last_eat(data);
 	data->stop = 0;
+	data->monitor->data = data;
 }
 
 void	initate_last_eat(t_data *data)
@@ -42,11 +44,6 @@ void	initate_last_eat(t_data *data)
 		i++;
 	}
 	i = 0;
-	while (i < data->philo_nb)
-	{
-		printf("%lld", data->philo[i].last_eat);
-		i++;
-	}
 }
 
 void	initate_nb_eat(t_data *data)
@@ -56,7 +53,7 @@ void	initate_nb_eat(t_data *data)
 	i = 0;
 	while (i < data->philo_nb)
 	{
-		data->philo[i].last_eat = 0;
+		data->philo[i].nb_eat = 0;
 		i++;
 	}
 }
