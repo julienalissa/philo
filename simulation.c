@@ -32,22 +32,3 @@ void	creat_and_start_routine(t_data *data)
 	}
 	pthread_join(data->monitor->name, NULL);
 }
-
-void	creat_forks(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->philo_nb)
-	{
-		if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
-			error_exit("prob");
-		i++;
-	}
-}
-
-
-
-
-
-

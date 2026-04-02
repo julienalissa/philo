@@ -6,6 +6,7 @@ void	link_fork_to_philos(t_data *data);
 long	ft_atol(char *str);
 void	initate_nb_eat(t_data *data);
 void	initate_last_eat(t_data *data);
+void	creat_forks(t_data *data);
 
 void	fill_data(t_data *data, int argc, char **argv)
 {
@@ -23,7 +24,7 @@ void	fill_data(t_data *data, int argc, char **argv)
 	link_fork_to_philos(data);
 	check_valid_argument(data);
 	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->state_lock, NULL);
+	pthread_mutex_init(&data->lock_mutex, NULL);
 	creat_forks(data);
 	initate_nb_eat(data);
 	initate_last_eat(data);
@@ -109,4 +110,17 @@ long	ft_atol(char *str)
 		nb = nb * 10 + (str[i++] - '0');
 	}
 	return (nb);
+}
+
+void	creat_forks(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
+			error_exit("prob");
+		i++;
+	}
 }

@@ -2,7 +2,7 @@ NAME = philo
 CFLAGS = -g -Wall -Wextra -Werror
 CC = cc
 
-SRCS := philo.c data.c simulation.c time.c error.c routine.c print.c
+SRCS := philo.c data.c simulation.c time.c error.c routine.c print.c routine_utils.c
 OBJS := ${SRCS:.c=.o}
 
 HEADER := philo.h
