@@ -1,11 +1,11 @@
 #include "philo.h"
 
-void	*philo_routine(void *arg);
 void	creat_and_start_routine(t_data *data);
 
 void	start_simulation(t_data *data)
 {
-	data->time_start = start_time();
+	data->stop = 0;
+	data->start_ready = 0;
 	creat_and_start_routine(data);
 }
 
@@ -16,14 +16,25 @@ void	creat_and_start_routine(t_data *data)
 	i = 0;
 	if (pthread_create(&(data->monitor->name), NULL,
 				monitor_routine, data) != 0)
-			printf("monitor marche pas"); //error_exit("prob");
+			error_exit("thread creation failed");
 	while (i < data->philo_nb)
 	{
 		if (pthread_create(&(data->philo[i].name), NULL,
 				philo_routine, &data->philo[i]) != 0)
-			printf("marche pas"); //error_exit("prob");
+			error_exit("thread creation failed");
 		i++;
 	}
+	pthread_mutex_lock(&data->start_lock);
+	data->time_start = start_time();
+	i = 0;
+	while (i < data->philo_nb)
+	{
+		data->philo[i].last_eat = data->time_start;
+		i++;
+	}
+	data->start_ready = 1;
+	pthread_cond_broadcast(&data->start_cond);
+	pthread_mutex_unlock(&data->start_lock);
 	i = 0;
 	while (i < data->philo_nb)
 	{

@@ -1,17 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: motde <motde@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/11 18:00:00 by motde             #+#    #+#             */
+/*   Updated: 2026/04/11 18:00:00 by motde            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	not_correct_number_argument(int argc)
 {
 	if (argc != 5 && argc != 6)
 		return (1);
-	else
-		return (0);
+	return (0);
 }
 
 void	error_exit(char *error)
 {
 	printf("%s", error);
-	// free si besoin
 	exit(1);
 }
 
@@ -28,4 +38,3 @@ void	check_valid_argument(t_data *data)
 	if (data->argc == 6 && data->nb_eat_before_stop < 1)
 		error_exit("nb time philo must eat cant be negatif or > LONG MAX\n");
 }
-
