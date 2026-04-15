@@ -2,31 +2,27 @@
 
 void	print_action(t_data *data, int id, const char *msg)
 {
-    int			stop;
-    long long	timestamp;
+    long long	time;
 
-    pthread_mutex_lock(&data->state_lock);
-    stop = data->stop;
-    pthread_mutex_unlock(&data->state_lock);
-    if (stop)
+    if (data->stop)
         return ;
     pthread_mutex_lock(&data->print);
     pthread_mutex_lock(&data->state_lock);
     if (!data->stop)
     {
-        timestamp = end_time(data->time_start);
-        printf("%lld %d %s\n", timestamp, id, msg);
+        time = end_time(data->time_start);
+        printf("time in ms : %lld, id philo : %d, msg : %s\n", time, id, msg);
     }
     pthread_mutex_unlock(&data->state_lock);
     pthread_mutex_unlock(&data->print);
 }
 
-void	print_death(t_data *data, int id)
+void	print_philo_dead(t_data *data, int id)
 {
-    long long	timestamp;
+    long long	time;
 
     pthread_mutex_lock(&data->print);
-    timestamp = end_time(data->time_start);
-    printf("%lld %d died\n", timestamp, id);
+    time = end_time(data->time_start);
+    printf("time in ms : %lld, id philo dead : %d is dead\n", time, id);
     pthread_mutex_unlock(&data->print);
 }

@@ -1,0 +1,34 @@
+changer le wait stop et le phtread_cond_t qu'on a pas le droit
+pour le error_exit il faut bien verifier de to unlock et free !!!!
+pourquoi pour print actin j'ai besoin de 2 mutex lock ??
+philo_routine pourqoui 	if (philo->philo_id % 2 == 0)
+		usleep(1000); ??
+    
+
+tester le moins de 10 ms pour 2 philosophers 
+time in ms c'est vraiment en ms check la sortie
+
+
+tests : 
+
+1. 800 200 200 : mourir a exact 800ms
+2. 4 410 200 200 : manger non stop
+3. 5 800 200 200 7 : ils faut qu'ils mangent tous
+4. 5 800 200 200 1 : stop direct un seul cycle
+
+tester avec gcc -fsanitize=thread
+tester avec valgrind --tool=helgrind ./philo
+
+gdb :
+-> break philo_routine
+-> break monitor_routine
+-> return
+
+info threads
+
+thread <id>
+->set sheduler-locking on
+
+
+./philo 5 800 200 200 7 | grep "is eating" | awk '{count[$4]++} END {for (id in count) print "Philo " id ": " count[id] " repas"}' | sort -n
+
