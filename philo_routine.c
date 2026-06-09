@@ -12,6 +12,7 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	wait_for_start(philo->data);
 	if (philo->philo_id % 2 == 0)
+		/* Small stagger to reduce immediate fork contention at startup. */
 		usleep(1000);
 	while (!stop_simu(philo->data))
 	{
@@ -58,7 +59,7 @@ static void	go_eat(t_philo *philo)
 	philo->last_eat = start_time();
 	philo->nb_eat++;
 	pthread_mutex_unlock(&philo->data->state_lock);
-	print_action(philo->data, philo->philo_id, "eating");
+	print_action(philo->data, philo->philo_id, "is eating");
 	smart_sleep_local(philo->data, philo->data->time_eat);
 	pthread_mutex_unlock(second_fork);
 	pthread_mutex_unlock(first_fork);
@@ -68,7 +69,7 @@ static void	go_sleep(t_philo *philo)
 {
 	if (stop_simu(philo->data))
 		return ;
-	print_action(philo->data, philo->philo_id, "sleeping");
+	print_action(philo->data, philo->philo_id, "is sleeping");
 	smart_sleep_local(philo->data, philo->data->time_sleep);
 }
 
@@ -76,7 +77,7 @@ static void	go_think(t_philo *philo)
 {
 	if (stop_simu(philo->data))
 		return ;
-	print_action(philo->data, philo->philo_id, "thinking");
+	print_action(philo->data, philo->philo_id, "is thinking");
 	usleep(1000);
 }
 

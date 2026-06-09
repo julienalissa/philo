@@ -32,7 +32,6 @@ typedef struct s_monitor
 
 typedef struct s_data
 {
-	pthread_cond_t	start_cond;
 	pthread_mutex_t	print;
 	pthread_mutex_t	state_lock;
 	pthread_mutex_t	start_lock;

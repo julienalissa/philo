@@ -17,15 +17,13 @@ void	fill_data(t_data *data, int argc, char **argv)
 		data->nb_eat_before_stop = ft_atol(argv[5]);
 	else
 		data->nb_eat_before_stop = -1;
+	check_valid_argument(data);
 	malloc_philos(data);
 	malloc_forks(data);
 	link_fork_to_philos(data);
-	check_valid_argument(data);
 	pthread_mutex_init(&data->print, NULL);
 	pthread_mutex_init(&data->state_lock, NULL);
 	pthread_mutex_init(&data->start_lock, NULL);
-	pthread_cond_init(&data->start_cond, NULL);
-	data->start_simulation = 0;
 	creat_forks(data);
 	initate_nb_eat(data);
 	data->stop = 0;
@@ -62,14 +60,21 @@ static void	malloc_philos(t_data *data)
 		error_exit("malloc problem\n");
 	data->monitor = malloc(sizeof(t_monitor));
 	if (!data->monitor)
+	{
+		free(data->philo);
 		error_exit("malloc problem\n");
+	}
 }
 
 static void	malloc_forks(t_data *data)
 {
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_nb);
 	if (!data->forks)
+	{
+		free(data->monitor);
+		free(data->philo);
 		error_exit("malloc problem\n");
+	}
 }
 
 static void	link_fork_to_philos(t_data *data)

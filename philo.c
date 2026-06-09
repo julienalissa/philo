@@ -27,7 +27,6 @@ static void	destroy_and_free(t_data *data)
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->state_lock);
 	pthread_mutex_destroy(&data->start_lock);
-	pthread_cond_destroy(&data->start_cond);
 	free(data->forks);
 	free(data->monitor);
 	free(data->philo);

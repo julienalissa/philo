@@ -43,10 +43,17 @@ void	*monitor_routine(void *arg)
 
 void	wait_for_start(t_data *data)
 {
-	pthread_mutex_lock(&data->start_lock);
-	while (!data->start_simulation)
-		pthread_cond_wait(&data->start_cond, &data->start_lock);
-	pthread_mutex_unlock(&data->start_lock);
+	int	started;
+
+	started = 0;
+	while (!started)
+	{
+		pthread_mutex_lock(&data->start_lock);
+		started = data->start_simulation;
+		pthread_mutex_unlock(&data->start_lock);
+		if (!started)
+			usleep(100);
+	}
 }
 
 int	stop_simu(t_data *data)
