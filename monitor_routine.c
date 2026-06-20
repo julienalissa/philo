@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   monitor_routine.c                                   :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jualissa <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2026/06/20 19:44:44 by jualissa       #+#    #+#                */
+/*   Updated: 2026/06/20 19:44:45 by jualissa       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	everyone_ate_enough(t_data *data);
@@ -5,7 +17,7 @@ static void	set_stop(t_data *data);
 
 void	*monitor_routine(void *arg)
 {
-    t_data		*data;
+	t_data		*data;
 	int			i;
 
 	data = (t_data *)arg;

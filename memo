@@ -26,3 +26,4 @@ gdb :
 
 info threads
 
+au debut usleep (1000) en fonction pour verifier 

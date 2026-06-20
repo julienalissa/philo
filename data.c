@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   data.c                                              :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jualissa <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2026/06/20 19:44:25 by jualissa       #+#    #+#                */
+/*   Updated: 2026/06/20 19:44:26 by jualissa       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	check_numeric_args(int argc, char **argv);
@@ -7,7 +19,7 @@ static void	link_fork_to_philos(t_data *data);
 
 void	fill_data(t_data *data, int argc, char **argv)
 {
-	check_numeric_args(argc, argv); // check if it's only nb
+	check_numeric_args(argc, argv);
 	data->argc = argc;
 	data->philo_nb = ft_atol(argv[1]);
 	data->time_die = ft_atol(argv[2]);

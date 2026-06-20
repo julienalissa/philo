@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   philo_routine.c                                     :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jualissa <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2026/06/20 19:44:51 by jualissa       #+#    #+#                */
+/*   Updated: 2026/06/20 19:44:52 by jualissa       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	go_eat(t_philo *philo);
@@ -12,7 +24,6 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	wait_for_start(philo->data);
 	if (philo->philo_id % 2 == 0)
-		/* Small stagger to reduce immediate fork contention at startup. */
 		usleep(1000);
 	while (!stop_simu(philo->data))
 	{

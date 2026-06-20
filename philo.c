@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   philo.c                                             :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jualissa <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2026/06/20 19:45:00 by jualissa       #+#    #+#                */
+/*   Updated: 2026/06/20 19:45:02 by jualissa       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	destroy_and_free(t_data *data);
@@ -31,5 +43,3 @@ static void	destroy_and_free(t_data *data)
 	free(data->monitor);
 	free(data->philo);
 }
-
-
