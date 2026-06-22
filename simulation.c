@@ -13,22 +13,13 @@
 #include "philo.h"
 
 static void	stop_start(t_data *data, int created_philos);
+static void	create_threads(t_data *data);
 
 void	start_simulation(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	if (pthread_create(&(data->monitor->name), NULL,
-			monitor_routine, data) != 0)
-		error_exit("thread creation failed");
-	while (i < data->philo_nb)
-	{
-		if (pthread_create(&(data->philo[i].name), NULL,
-				philo_routine, &data->philo[i]) != 0)
-			stop_start(data, i);
-		i++;
-	}
+	create_threads(data);
 	pthread_mutex_lock(&data->start_lock);
 	data->time_start = start_time();
 	i = 0;
@@ -46,6 +37,23 @@ void	start_simulation(t_data *data)
 		i++;
 	}
 	pthread_join(data->monitor->name, NULL);
+}
+
+static void	create_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (pthread_create(&(data->monitor->name), NULL,
+			monitor_routine, data) != 0)
+		error_exit("thread creation failed");
+	while (i < data->philo_nb)
+	{
+		if (pthread_create(&(data->philo[i].name), NULL,
+				philo_routine, &data->philo[i]) != 0)
+			stop_start(data, i);
+		i++;
+	}
 }
 
 static void	stop_start(t_data *data, int created_philos)

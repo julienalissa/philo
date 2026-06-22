@@ -89,4 +89,8 @@ long long	end_time(long long start);
 void		print_action(t_data *data, int id, const char *msg);
 void		print_philo_dead(t_data *data, int id);
 
+//utils
+void		smart_sleep_local(t_data *data, long long duration_ms);
+void		set_stop(t_data *data);
+
 #endif

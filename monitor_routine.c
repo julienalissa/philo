@@ -13,32 +13,17 @@
 #include "philo.h"
 
 static int	everyone_ate_enough(t_data *data);
-static void	set_stop(t_data *data);
+static int	check_philosophers(t_data *data);
 
 void	*monitor_routine(void *arg)
 {
 	t_data		*data;
-	int			i;
 
 	data = (t_data *)arg;
 	wait_for_start(data);
 	while (!stop_simu(data))
 	{
-		i = 0;
-		data->monitor->philo_dead_id = 0;
-		while (i < data->philo_nb && !data->monitor->philo_dead_id)
-		{
-			pthread_mutex_lock(&data->state_lock);
-			data->monitor->time_last_eat = end_time(data->philo[i].last_eat);
-			if (!data->stop && data->monitor->time_last_eat >= data->time_die)
-			{
-				data->stop = 1;
-				data->monitor->philo_dead_id = data->philo[i].philo_id;
-			}
-			pthread_mutex_unlock(&data->state_lock);
-			i++;
-		}
-		if (data->monitor->philo_dead_id)
+		if (check_philosophers(data))
 		{
 			print_philo_dead(data, data->monitor->philo_dead_id);
 			return (NULL);
@@ -51,6 +36,27 @@ void	*monitor_routine(void *arg)
 		usleep(1000);
 	}
 	return (NULL);
+}
+
+static int	check_philosophers(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->monitor->philo_dead_id = 0;
+	while (i < data->philo_nb && !data->monitor->philo_dead_id)
+	{
+		pthread_mutex_lock(&data->state_lock);
+		data->monitor->time_last_eat = end_time(data->philo[i].last_eat);
+		if (!data->stop && data->monitor->time_last_eat >= data->time_die)
+		{
+			data->stop = 1;
+			data->monitor->philo_dead_id = data->philo[i].philo_id;
+		}
+		pthread_mutex_unlock(&data->state_lock);
+		i++;
+	}
+	return (data->monitor->philo_dead_id);
 }
 
 void	wait_for_start(t_data *data)
@@ -97,11 +103,4 @@ static int	everyone_ate_enough(t_data *data)
 	}
 	pthread_mutex_unlock(&data->state_lock);
 	return (1);
-}
-
-static void	set_stop(t_data *data)
-{
-	pthread_mutex_lock(&data->state_lock);
-	data->stop = 1;
-	pthread_mutex_unlock(&data->state_lock);
 }
